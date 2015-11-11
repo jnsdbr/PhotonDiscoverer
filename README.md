@@ -30,6 +30,11 @@ Add a platform
 cordova plugin add android
 ```
 
+Add your access token to the index.js
+```
+access_token: '<yourtoken>',
+```
+
 Build
 
 ```
