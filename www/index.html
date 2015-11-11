@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Photon Discoverer</title>
+    </head>
+    <body>
+        <div class="app">
+            <h1 id="headline">Photon Discoverer</h1>
+            <img src="img/search.png" />
+            <div id="deviceready" class="blink">
+                <p class="event listening">Initializing</p>
+                <p class="event received">Ready to search</p>
+            </div>
+            <button id="action">Search</button>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
