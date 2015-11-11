@@ -114,6 +114,8 @@ var app = {
             document.getElementById('action').innerHTML = 'Start Polling';
         }
         if (id == 'startpolling') {
+            document.getElementById('headline').innerHTML = 'Polling cloud data';
+            document.querySelector('.app img').src = 'img/polling.png';
             document.getElementById('action').innerHTML = 'Stop Polling';
         }
         if (id == 'stoppolling') {
