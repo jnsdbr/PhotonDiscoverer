@@ -11,17 +11,23 @@ var app = {
     initialize: function() {
         this.bindEvents();
     },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
+
+    /**
+     * Bind Event Listeners
+     *
+     * Bind any events that are required on startup. Common events are:
+     * 'load', 'deviceready', 'offline', and 'online'.
+     */
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
+
+    /**
+     * deviceready Event Handler
+     *
+     * The scope of 'this' is the event. In order to call the 'receivedEvent'
+     * function, we must explicitly call 'app.receivedEvent(...);'
+    */
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         app.setupUDP();
@@ -55,7 +61,9 @@ var app = {
         });
     },
 
-    // Setup the UDP connection
+    /**
+     * Setup the UDP connection
+     */
     setupUDP: function() {
         chrome.sockets.udp.create({}, function(socketInfo) {
             app.socketId = socketInfo.socketId;
@@ -78,14 +86,18 @@ var app = {
                     app.receivedEvent('foundPhoton');
                     // Close the UDP socket
                     chrome.sockets.udp.close(app.socketId);
-                    app.getDeviceInfo();
+                    app.getDeviceInfo(app.photonId);
                     app.state = 1;
                 }
             });
         });
     },
 
-    // Update DOM on a Received Event
+    /**
+     * Update the DOM according to a received Event
+     *
+     * @param id eventId
+     */
     receivedEvent: function(id) {
         if (id == 'deviceready') {
             var parentElement = document.getElementById(id);
@@ -111,7 +123,12 @@ var app = {
         console.log('Received Event: ' + id);
     },
 
-    // Convert string to ArrayBuffer
+    /**
+     * Convert string to ArrayBuffer
+     *
+     * @param string String to Convert
+     * @return ArrayBuffer
+     */
     string2ArrayBuffer: function(string) {
         var buffer = new ArrayBuffer(string.length);
         var bufferView = new Uint8Array(buffer);
@@ -121,11 +138,19 @@ var app = {
         return buffer;
     },
 
-    // Convert ArrayBuffer to String
+    /**
+     * Convert an ArrayBuffer to String
+     *
+     * @param buffer ArrayBuffer to Convert
+     * @return String
+     */
     arrayBuffer2String: function(buffer) {
         return String.fromCharCode.apply(null, new Uint8Array(buffer));
     },
 
+    /**
+     * Creates an interval for polling data from the cloud
+     */
     startPolling: function() {
         app.pollInterval = setInterval(function() {
             app.getDeviceVar('number1', function(response) {
@@ -136,14 +161,29 @@ var app = {
         }, 5000);
     },
 
+    /**
+     * Stops the polling interval
+     */
     stopPolling: function() {
         clearInterval(app.pollInterval);
     },
 
-    getDeviceURL: function() {
-        return app.apiURL + app.photonId + '?access_token=' + app.access_token;
+    /**
+     * Generate the device url
+     *
+     * @param id Id of the device
+     * @return URL
+     */
+    getDeviceURL: function(id) {
+        return app.apiURL + id + '?access_token=' + app.access_token;
     },
 
+    /**
+     * Returns the json for a var
+     *
+     * @param varname Name of the var
+     * @param callback function to execute when the request is finished
+     */
     getDeviceVar: function(varname, callback) {
         var varURL = app.apiURL + app.photonId + '/' + varname + '?access_token=' + app.access_token;
         app.apiRequest(varURL, function(response) {
@@ -158,15 +198,31 @@ var app = {
         });
     },
 
-    getDeviceInfo: function() {
-        app.apiRequest(app.getDeviceURL(), function(response) {
+    /**
+     * Returns the device info
+     *
+     * @param id Id of the device to look for
+     * @param callback function to execute when the request is finished
+     */
+    getDeviceInfo: function(id, callback) {
+        app.apiRequest(app.getDeviceURL(id), function(response) {
             if (response.readyState == 4 && response.status == 200) {
                 // Output response
                 console.log(response.responseText);
+
+                if (callback) {
+                    callback(response.responseText);
+                }
             }
         });
     },
 
+    /**
+     * Creates a HTTP request
+     *
+     * @param url URL for the request
+     * @param callback function to execute when the request is finished
+     */
     apiRequest: function(url, callback) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
