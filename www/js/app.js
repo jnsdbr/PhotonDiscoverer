@@ -149,15 +149,25 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
     };
 }])
 
+/**
+ * Discovery Service
+ *
+ * Provides methods to communicate over the network
+ */
 .factory('discoveryService', function() {
+    // Id of the socket
     var socketId = -1;
+
+    // Array of deviceIDs
     var deviceIDs = [];
 
     var methods = {
-        init: function() {
-            methods.bindPort(51014);
-        },
-
+        /**
+         * Binds a Port
+         *
+         * @param portNumber Port to listen on
+         * @param receiveCallback Callback to handle received data
+         */
         bindPort: function(portNumber, receiveCallback) {
             chrome.sockets.udp.create({}, function(socketInfo) {
               socketId = socketInfo.socketId;
@@ -182,12 +192,22 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
            });
         },
 
+        /**
+         * Closes the socket/port
+         */
         closePort: function() {
             // Close the UDP socket
             chrome.sockets.udp.close(socketId);
             socketId = -1;
         },
 
+        /**
+         * Sends a message to a designated ip + port
+         *
+         * @param ip Target ip
+         * @param port Target port
+         * @param message Message to send
+         */
         sendMessage: function(ip, port, message) {
             chrome.sockets.udp.getSockets(function(socketInfos) {
                 if (socketInfos.length > 0) {
@@ -198,6 +218,12 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
             });
         },
 
+        /**
+         * Converts a string to an ArrayBuffer
+         *
+         * @param string String to Convert
+         * @return ArrayBuffer
+         */
         string2ArrayBuffer: function(string) {
             var buffer = new ArrayBuffer(string.length);
             var bufferView = new Uint8Array(buffer);
@@ -207,22 +233,50 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
             return buffer;
         },
 
+        /**
+          * Converts an ArrayBuffer to String
+          *
+          * @param buffer ArrayBuffer to Convert
+          * @return String
+          */
         arrayBuffer2String: function(buffer) {
             return String.fromCharCode.apply(null, new Uint8Array(buffer));
         },
 
+        /**
+         * Adds a device id
+         *
+         * @param id Device id to add
+         */
         addDeviceId: function(id) {
             deviceIDs.push(id);
         },
 
+        /**
+         * Get a device id
+         *
+         * @param id Position in the deviceIDs array
+         *
+         * @return String
+         */
         getDeviceId: function(id) {
             return deviceIDs[id];
         },
 
+        /**
+         * Returns the deviceIDs
+         *
+         * @return Array
+         */
         getDeviceIDs: function() {
             return deviceIDs;
         },
 
+        /**
+         * Checks if a device id is already in the deviceIDs array
+         *
+         * @return boolean
+         */
         isIdDiscovered: function(id) {
             for (var i = 0; i < deviceIDs.length; i++) {
                 if (id == deviceIDs[i]) {
@@ -233,6 +287,9 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
             return false;
         },
 
+        /**
+         * Clears the deviceIDs array
+         */
         clearDeviceIDs: function() {
             deviceIDs = [];
         }
