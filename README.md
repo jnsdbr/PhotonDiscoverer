@@ -20,7 +20,7 @@ ionic platform add android
 
 Add your access token to the app.js on line 28
 ```
-access_token: '<yourtoken>',
+var accessToken = '<your_token>';
 ```
 
 Build
