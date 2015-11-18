@@ -4,33 +4,21 @@ Photon Discoverer is an example app for automatic discovery of Photons inside a 
 
 ## Installation
 
-Clone the repository to a temporary directory:
+Clone the repository an switch to ionic
 
 ```
-git clone https://github.com/jnsdbr/PhotonDiscoverer.git PhotonDiscovererTmp
-```
-
-Create a new cordova project
-
-```
-cordova create PhotonDiscoverer
-```
-
-Copy the files from the repository to the cordova project
-
-```
-cd PhotonDiscovererTmp
-cp -R * ../PhotonDiscoverer/
-cd ../PhotonDiscoverer
+git clone https://github.com/jnsdbr/PhotonDiscoverer.git
+git checkout ionic
+git pull origin ionic
 ```
 
 Add a platform
 
 ```
-cordova plugin add android
+ionic platform add android
 ```
 
-Add your access token to the index.js
+Add your access token to the app.js on line 28
 ```
 access_token: '<yourtoken>',
 ```
@@ -38,5 +26,5 @@ access_token: '<yourtoken>',
 Build
 
 ```
-cordova build android
+ionic build android
 ```
