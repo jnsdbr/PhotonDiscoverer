@@ -36,13 +36,19 @@
 </script>
 
 <script type="text/ng-template" id="poll.html">
-    <ion-view title="Poll">
+    <ion-view title="Poll" ng-controller="pollController">
         <ion-nav-buttons side="primary">
-            <div ng-controller="navButtonController">
+            <div>
                 <button id="pollButton" class="button" ng-click="poll()">{{pollButtonText}}</button>
             </div>
         </ion-nav-buttons>
-        <ion-content class="padding">
+        <ion-content>
+            <p ng-hide="items.length" class="padding">No data polled!</p>
+            <ion-list>
+                <ion-item ng-repeat="item in items track by $index">
+                    <pre style="font-family: 'Roboto Mono'; font-size: 12px">{{item}}</pre>
+                </ion-item>
+            </ion-list>
         </ion-content>
     </ion-view>
 </script>

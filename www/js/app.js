@@ -24,13 +24,16 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
     });
 })
 
-.controller('navButtonController', ['$scope', '$interval', '$http', 'discoveryService', function($scope, $interval, $http, discoveryService) {
+.controller('pollController', ['$scope', '$interval', '$http', 'discoveryService', function($scope, $interval, $http, discoveryService, listController) {
     var accessToken = '';
     var api_url = 'https://api.particle.io/v1/devices/';
 
     var pollInterval;
     $scope.pollButtonText = 'Start';
     $scope.polling = false;
+
+    // List items
+    $scope.items = [];
 
     var apiRequest = function(url, callback) {
         if (callback) {
@@ -39,6 +42,7 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
         else {
             $http.get(url).then(function(response) {
                 console.log(response.data);
+                $scope.addItem(JSON.stringify(response.data, null, 4));
             });
         }
     };
@@ -59,7 +63,6 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
             $scope.polling = true;
 
             pollInterval = $interval(function() {
-                console.log('hi');
                 for (var i = 0; i < deviceIDs.length; i++) {
                     var url = api_url + deviceIDs[i] + '?access_token=' + accessToken;
                     apiRequest(url);
@@ -71,6 +74,10 @@ angular.module('photonDiscoverer', ['ionic', 'ui.router'])
         else {
             clearPollInterval();
         }
+    };
+
+    $scope.addItem = function(item) {
+        $scope.items.push(item);
     };
 }])
 
