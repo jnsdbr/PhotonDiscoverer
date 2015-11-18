@@ -4,7 +4,7 @@ Photon Discoverer is an example app for automatic discovery of Photons inside a 
 
 ## Installation
 
-Clone the repository an switch to ionic
+Clone the repository and switch to the ionic branch
 
 ```
 git clone https://github.com/jnsdbr/PhotonDiscoverer.git
