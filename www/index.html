@@ -45,7 +45,7 @@
             </div>
         </ion-nav-buttons>
         <ion-content>
-            <p ng-hide="items.length" class="padding">No data polled!</p>
+            <p ng-hide="items.length" id="noDataMessage" class="padding">No data polled!</p>
             <ion-list>
                 <ion-item ng-repeat="item in items track by $index" class="item">
                     <pre style="font-family: 'Roboto Mono'; font-size: 12px">{{item}}</pre>

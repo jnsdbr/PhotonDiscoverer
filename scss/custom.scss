@@ -5,11 +5,19 @@
 .button.button-light.button-outline {
     border: #fff 1px solid;
     color: #fff;
+
+    &.active, &.activated {
+        background: #fff;
+        color: $calm;
+    }
 }
 
-.center {
-    margin: 0 auto;
-    display: block;
+#noDataMessage {
+    width: 100%;
+    text-align: center;
+    padding-top: 55%;
+    font-size: 200%;
+    font-weight: bold;
 }
 
 .blue-background {
